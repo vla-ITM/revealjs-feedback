@@ -1,40 +1,190 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
 
-		<title>reveal.js</title>
+    <title>reveal.js</title>
 
-		<link rel="stylesheet" href="dist/reset.css">
-		<link rel="stylesheet" href="dist/reveal.css">
-		<link rel="stylesheet" href="dist/theme/black.css">
+    <link rel="stylesheet" href="dist/reset.css" />
+    <link rel="stylesheet" href="dist/reveal.css" />
+    <link rel="stylesheet" href="dist/theme/black.css" />
 
-		<!-- Theme used for syntax highlighted code -->
-		<link rel="stylesheet" href="plugin/highlight/monokai.css">
-	</head>
-	<body>
-		<div class="reveal">
-			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
-			</div>
-		</div>
+    <!-- Theme used for syntax highlighted code -->
+    <link rel="stylesheet" href="plugin/highlight/monokai.css" />
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section >
+          <section data-markdown>
+			<textarea data-template>
+				## useState & useEffect
+				Tommelfinger regel: undgå at sætte state i en useEffect.
+						  </textarea>
+		  </section >
+		  <section data-markdown>
+			  <textarea data-template>
+				### Eksempel 1
 
-		<script src="dist/reveal.js"></script>
-		<script src="plugin/notes/notes.js"></script>
-		<script src="plugin/markdown/markdown.js"></script>
-		<script src="plugin/highlight/highlight.js"></script>
-		<script>
-			// More info about initialization & config:
-			// - https://revealjs.com/initialization/
-			// - https://revealjs.com/config/
-			Reveal.initialize({
-				hash: true,
+				```js
+				useEffect(() => {
+					if (!hasSuggestions) return;
+			
+					if (inputValue.length > 0) {
+						const newOptions = new Set(options);
+						setFilteredOptions(newOptions);
+					} else {
+						setFilteredOptions(new Set([DROPDOWN_PLACEHOLDER]));
+					}
+				}, [inputValue, options, hasSuggestions]);
+```
+			</textarea>
+		  </section>
+		  <section data-markdown>
+			<textarea data-template>
+			  ### Eksempel 2
+			  ```ts
+useEffect(() => {
+	setDealsState(
+		removeArrayDuplicates(
+			contactsState.flatMap(contact =>
+				contact.dealContacts.flatMap(dealContact => dealContact.deal)
+			)
+		)
+	);
+}, [contactsState]);
 
-				// Learn about plugins: https://revealjs.com/plugins/
-				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
-			});
-		</script>
-	</body>
+useEffect(() => {
+	setAccountManagersState(
+		removeArrayDuplicates(
+			dealsState.flatMap(deal =>
+				deal.accountManagerDeals.flatMap(accountManagerDeal => accountManagerDeal.accountManager)
+			)
+		)
+	);
+}, [dealsState]);
+
+useEffect(() => {
+	setSuppliersState(
+		removeArrayDuplicates(accountManagersState.flatMap(accountManager => accountManager.supplier))
+	);
+}, [accountManagersState]);
+			```
+		  </textarea>
+		</section>
+        </section>
+		<section>
+			<section data-markdown>
+				<textarea data-template>
+					## Folder struktur
+					Det ser umiddelbart meget fint ud. Det er udelukkende præferencer.
+				</textarea>
+			</section>
+			<section data-markdown>
+				<textarea data-template>
+					### Components
+					* Seperation mellem common og andet
+				</textarea>
+			</section>
+			<section data-markdown>
+				<textarea data-template>
+					### Queries
+					* Kunne hives ud i en infrastructure eller apollo mappe
+					* \_generated\_ kunne tilføjes til `.gitignore`
+				</textarea>
+			</section>
+			<section data-markdown>
+				<textarea data-template>
+					### utils
+					* utils er et vidt begreb. Man kunne overveje om man kunne putte noget af det i mere sigende mapper.
+				</textarea>
+			</section>
+		</section>
+
+		<section>
+			<section data-markdown>
+				<textarea data-template>
+					## Reusable components
+					Generelt gode.
+				</textarea>
+			</section>
+			<section data-markdown>
+				<textarea data-template>
+					### ClientListItem er hårdt bundet på query
+					Props for ClientListItem er direkte bundet op på queryen og bliver derfor svær at bruge generisk.
+				</textarea>
+			</section>
+		</section>
+
+		<section>
+			<section data-markdown>
+				<textarea data-template>
+					## React
+					Det ser godt ud. Har et par kommentarer ifht. konventionerne.
+					* main.tsx -> index.tsx
+					* App.tsx som entrypoint
+					* undgå så vidt muligt kode i jsx.
+					* Træk logik ud i beskrivende hooks.
+					* generelt `propsWithChildren<T>` 
+				</textarea>
+			</section>
+		</section>
+
+		<section>
+			<section data-markdown>
+				<textarea data-template>
+					## Andet
+				</textarea>
+			</section>
+			<section data-markdown>
+				<textarea data-template>
+					### Routing
+					* Content kunne hedder Routing istedet.
+					* Evt. placeret i App.tsx som kunne være brugt i index.tsx
+				</textarea>
+			</section>
+			<section data-markdown>
+				<textarea data-template>
+					### Theme
+					* Ser umiddelbart meget fint ud.
+				</textarea>
+			</section>
+			<section data-markdown>
+				<textarea data-template>
+					### Læsbarhed
+					* Lav hooks til logikken
+					* Lav variable og giv sigende navne
+					* Undgå kode i jsx
+				</textarea>
+			</section>
+		</section>
+		<section data-markdown>
+			<textarea data-template>
+				## Stærkt arbejde!
+				![](https://media.tenor.com/KeSDB2EZjPAAAAAM/leonardo-di-caprio-wolf-of-wall-street.gif)
+			</textarea>
+		</section>
+      </div>
+    </div>
+
+    <script src="dist/reveal.js"></script>
+    <script src="plugin/notes/notes.js"></script>
+    <script src="plugin/markdown/markdown.js"></script>
+    <script src="plugin/highlight/highlight.js"></script>
+    <script>
+      // More info about initialization & config:
+      // - https://revealjs.com/initialization/
+      // - https://revealjs.com/config/
+      Reveal.initialize({
+        hash: true,
+
+        // Learn about plugins: https://revealjs.com/plugins/
+        plugins: [RevealMarkdown, RevealHighlight, RevealNotes],
+      });
+    </script>
+  </body>
 </html>
